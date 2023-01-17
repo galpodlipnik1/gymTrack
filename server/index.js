@@ -7,6 +7,7 @@ import chalk from 'chalk';
 
 dotenv.config();
 import userRoutes from './routes/users.js';
+import jurnalRoutes from './routes/jurnal.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
 app.use('/users', userRoutes);
+app.use('/jurnal', jurnalRoutes);
 
 app.get('/', (req, res) => {
   const messageJson = {

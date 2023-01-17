@@ -1,12 +1,12 @@
 import * as types from '../constants/types';
 
 const initialState = {
-    isAuthenticated: false,
-    user: {}
+  isAuthenticated: false,
+  user: {}
 };
 
-const authReducer = (state = { authData:initialState }, action) => {
-    return state;
+const authReducer = (state = { authData: initialState }, action) => {
+  return state;
 };
 
 export default authReducer;
