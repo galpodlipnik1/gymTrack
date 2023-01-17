@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Grow,
   Box,
@@ -16,13 +16,13 @@ import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../actions/users';
 import toast, { Toaster } from 'react-hot-toast';
 import { bg } from '../assets';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { AiOutlineLock, AiFillEyeInvisible, AiFillEye } from 'react-icons/ai ';
 
 const Auth = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth.authData);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -43,22 +43,18 @@ const Auth = () => {
 
     let success;
     if (isLogin) {
-      success = await signIn(formData);
+      success = dispatch(signIn(formData));
     } else {
-      success = await signUp(formDataSignup);
+      success = dispatch(signUp(formDataSignup));
     }
     if (success) {
       toast.success('Logged in successfully');
       navigate('/');
     } else {
-      toast.error('Invalid credentials');
+      toast.error('An error occurred please try again');
       formData.password = '';
     }
   };
-
-  useEffect(() => {
-    if (isAuthenticated) navigate('/');
-  }, [isAuthenticated, navigate]);
 
   return (
     <Grow in>
@@ -210,6 +206,26 @@ const Auth = () => {
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       label="Password"
+                      variant="standard"
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton onClick={() => setShowPassword(!showPassword)}>
+                              {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type={showPassword ? 'text' : 'password'}
+                      name="confirmPassword"
+                      label="Confirm Password"
                       variant="standard"
                       required
                       fullWidth

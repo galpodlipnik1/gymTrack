@@ -1,8 +1,11 @@
 import * as api from "../api";
+import { AUTH, LOGOUT } from "../constants/types";
 
-export const signIn = async (formData) => {
+export const signIn = (formData) => async (dispatch) => {
   try {
     const { data } = await api.signIn(formData);
+
+    dispatch({ type: AUTH, data });
     
     if(data){
       return true
@@ -13,10 +16,11 @@ export const signIn = async (formData) => {
   }
 };
 
-export const signUp = async (formData) => {
+export const signUp = (formData) => async (dispatch) => {
   try {
-    console.log(formData);
     const { data } = await api.signUp(formData);
+
+    dispatch({ type: AUTH, data });
     
     if(data){
       return true

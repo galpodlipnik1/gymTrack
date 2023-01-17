@@ -15,7 +15,7 @@ export const signIn = async (req, res) => {
     if (!isPasswordCorrect) return res.status(400).json({ message: 'Invalid credentials.' });
 
     const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id, isAdmin: existing.isAdmin },
+      { email: existingUser.email, id: existingUser._id, isAdmin: existingUser.isAdmin },
       process.env.JWT_SECRET,
       { expiresIn: '5h' }
     );
@@ -34,7 +34,7 @@ export const signIn = async (req, res) => {
 
 export const signUp = async (req, res) => {
   try {
-    const { email, password, confirmPassword, firstName, lastName } = req.body;
+    const { email, password, confirmPassword, firstname, lastname } = req.body;
 
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'User already exists.' });
@@ -47,7 +47,7 @@ export const signUp = async (req, res) => {
     const user = await UserModel.create({
       email,
       password: hashedPassword,
-      name: `${firstName} ${lastName}`
+      name: `${firstname} ${lastname}`
     });
 
     const token = jwt.sign(
